@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 import cv2
 import numpy as np
 
-UPLOAD_FOLDER = r'C:/Users/Sidharth/Documents/code/ml project/shots'
+UPLOAD_FOLDER = r'C:/Users/Sidharth/Documents/GitHub/rottenorange/shots'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 
@@ -26,7 +26,7 @@ def pred(img):
     print(img)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     img = cv2.resize(img,(100,100))
-    print(cat(new_model.predict(img.reshape(1,100,100,3))))
+    return cat(new_model.predict(img.reshape(1,100,100,3)))
 
 
 def allowed_file(filename):
@@ -49,10 +49,16 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            print(filename)
-            pred(filename)
+            res = pred(filename)
             # img = cv2.imdecode(np.fromstring(file.read(), np.uint8), cv2.IMREAD_UNCHANGED)
-            return redirect("/")
+            return f'''
+    <!doctype html>
+    <title>Upload new File</title>
+    <h1>{res}</h1>
+    <form method=post enctype=multipart/form-data>
+      <input type=file name=file>
+      <input type=submit value=Upload>
+    </form>'''
     return '''
     <!doctype html>
     <title>Upload new File</title>
