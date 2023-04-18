@@ -4,8 +4,9 @@ from werkzeug.utils import secure_filename
 import cv2
 import numpy as np
 
-UPLOAD_FOLDER = r'C:/Users/Sidharth/Documents/GitHub/rottenorange/shots'
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
+UPLOAD_FOLDER = os.path.join(os.getcwd(),"shots")
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 
 app = Flask(__name__)
